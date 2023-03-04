@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block header %}
+<p class="title is-1">Deelnemers</p>
+<a href="{{url_for('main.deelnemer_add')}}"><button class="button is-info is-light">Deelnemer toevoegen</button></a>
+{% endblock %}
+
+{% block content %}
+<div class="table-container">
+  <table class="table is-hoverable competitions">
+    <thead>
+      <tr>
+        <th>Naam</th>
+        <th class="has-text-centered">Geslacht</th>
+        <th class="has-text-centered">Barcode</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for deelnemer in deelnemers %}
+      <tr>
+        <td> <span class="has-tooltip-top has-tooltip-arrow" style="border-bottom: none;"
+            data-tooltip="Deelnemer ID: {{deelnemer.id}}">{{deelnemer.naam}}</span>
+        </td>
+        <td class="has-text-centered">{{deelnemer.geslacht}}</td>
+        <td class="has-text-centered">{{deelnemer.barcode}}</td>
+        <td class="has-text-centered">
+          <a href="{{url_for('main.deelnemer_edit', id=deelnemer.id)}}"
+            class="has-tooltip-info has-tooltip-arrow has-text-centered" data-tooltip="Bewerken"><button
+              class="button is-info"><span class="icon is-small"><i class="fas fa-pen-to-square"></i></span></button></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock %}

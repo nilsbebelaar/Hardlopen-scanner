@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block header %}
+<p class="title is-1">Uitslagen</p>
+{% endblock %}
+
+{% block content %}
+<div class="table-container">
+  <table class="table is-hoverable competitions">
+    <thead>
+      <tr>
+        <th>Naam</th>
+        <th class="has-text-centered">Geslacht</th>
+        <th class="has-text-centered">Barcode</th>
+        <th class="has-text-centered">Aantal ronden</th>
+        <th class="has-text-centered">Tijd</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for deelnemer in deelnemers %}
+      <tr>
+        <td> <span class="has-tooltip-top has-tooltip-arrow" style="border-bottom: none;"
+            data-tooltip="Deelnemer ID: {{deelnemer.id}}">{{deelnemer['naam']}}</span>
+        </td>
+        <td class="has-text-centered">{{deelnemer['geslacht']}}</td>
+        <td class="has-text-centered">{{deelnemer['barcode']}}</td>
+        <td class="has-text-centered">{{deelnemer['rondes']}}</td>
+        <td class="has-text-centered">{{deelnemer['tijd_str']}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+
+{% endblock %}
