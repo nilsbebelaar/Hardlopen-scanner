@@ -15,12 +15,14 @@
       <div class="field-body">
         <div class="field is-expanded">
           <div class="control">
-            <input class="input" type="text" name="barcode">
+            <input id="defaultInput" class="input" type="text" name="barcode">
           </div>
         </div>
       </div>
     </div>
-
+    <script>
+      $("#defaultInput").focus();
+    </script>
     <hr>
     <div class="flex-center">
       <button class="button is-block is-info is-light is-medium">

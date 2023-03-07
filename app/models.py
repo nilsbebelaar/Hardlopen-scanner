@@ -18,6 +18,6 @@ class Tijden(db.Model):
     __tablename__ = 'Tijden'
 
     id = db.Column(db.Integer, primary_key=True)
-    tijd = db.Column(db.DateTime)
+    tijd = db.Column(db.Float)
     barcode = db.Column(db.Integer, db.ForeignKey('Deelnemers.barcode'))
     deelnemer = db.relationship("Deelnemers", back_populates="tijden")

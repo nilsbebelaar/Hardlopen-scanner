@@ -28,6 +28,19 @@ body>section:last-of-type {
     margin-right: 0.25em;
 }
 
+.navbar-brand .navbar-item.logo {
+    padding: 2px;
+}
+
+.navbar-brand .navbar-item.logo img {
+    max-height: 2.5rem;
+}
+
+.navbar-brand .navbar-item.logo:hover {
+    background-color: initial !important;
+    color: initial !important;
+}
+
 .message-column-centered {
     margin: .75em auto;
     max-width: 560px;
@@ -43,29 +56,29 @@ body>section:last-of-type {
     row-gap: 5px;
 }
 
-table.competitions {
+table.deelnemers,
+table.uitslagen {
     overflow: hidden;
     max-width: 1160px;
     margin-left: auto;
     margin-right: auto;
 }
 
-table.competitions th,
-table.competitions td {
+table.deelnemers th,
+table.deelnemers td,
+table.uitslagen th,
+table.uitslagen td {
     white-space: nowrap;
 }
 
-table.competitions thead th:last-child,
-table.competitions tbody td:last-child {
+table.deelnemers thead th:last-child,
+table.deelnemers tbody td:last-child {
     padding-right: 35px;
 }
 
-table.competitions tr a button {
+table.deelnemers tr button,
+table.uitslagen tr button {
     font-size: .65em;
-}
-
-table.competitions td .flag {
-    margin-right: 5px;
 }
 
 a.has-tooltip-multiline::before {

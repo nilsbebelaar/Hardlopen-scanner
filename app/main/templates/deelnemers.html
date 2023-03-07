@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
 {% block header %}
-<p class="title is-1">Deelnemers</p>
-<a href="{{url_for('main.deelnemer_add')}}"><button class="button is-info is-light">Deelnemer toevoegen</button></a>
+<p class="title is-1 mb-3">Deelnemers</p>
+<a href="{{url_for('main.deelnemer_add')}}"><button class="button is-success is-light"><i class="icon"><span
+        class="fa fa-plus"></span></i>
+    <span>Deelnemer toevoegen</span>
+  </button></a>
 {% endblock %}
 
 {% block content %}
 <div class="table-container">
-  <table class="table is-hoverable competitions">
+  <table class="table is-hoverable deelnemers">
     <thead>
       <tr>
         <th>Naam</th>
@@ -22,12 +25,26 @@
         <td> <span class="has-tooltip-top has-tooltip-arrow" style="border-bottom: none;"
             data-tooltip="Deelnemer ID: {{deelnemer.id}}">{{deelnemer.naam}}</span>
         </td>
-        <td class="has-text-centered">{{deelnemer.geslacht}}</td>
+        <td class="has-text-centered">
+          {% if deelnemer['geslacht'] == "M" %}Man{% endif %}
+          {% if deelnemer['geslacht'] == "V" %}Vrouw{% endif %}
+        </td>
         <td class="has-text-centered">{{deelnemer.barcode}}</td>
         <td class="has-text-centered">
           <a href="{{url_for('main.deelnemer_edit', id=deelnemer.id)}}"
             class="has-tooltip-info has-tooltip-arrow has-text-centered" data-tooltip="Bewerken"><button
-              class="button is-info"><span class="icon is-small"><i class="fas fa-pen-to-square"></i></span></button></a>
+              class="button is-info"><span class="icon is-small"><i
+                  class="fas fa-pen-to-square"></i></span></button></a>
+          <!-- <a href="{{url_for('main.deelnemer_delete', id=deelnemer.id)}}" data-confirm="{{deelnemer.naam}} verwijderen?"
+            data-method="delete" rel="nofollow" class="has-tooltip-danger has-tooltip-arrow has-text-centered"
+            data-tooltip="Verwijderen"> -->
+          <button id="delete_{{deelnemer.id}}"
+            class="button is-danger has-tooltip-danger has-tooltip-arrow has-text-centered" data-tooltip="Verwijderen">
+            <span class="icon is-small"><i class="fas fa-trash"></i></span></button>
+          <script>
+            deleteButton('{{deelnemer.id}}', '{{deelnemer.naam}}')
+          </script>
+
         </td>
       </tr>
       {% endfor %}

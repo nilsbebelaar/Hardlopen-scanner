@@ -1,0 +1,3 @@
+docker build -t nilsbebelaar/hardlopen-scanner:latest .
+
+docker push nilsbebelaar/hardlopen-scanner:latest
