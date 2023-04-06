@@ -93,8 +93,16 @@ def tijd_scan():
         barcode = request.form.get('barcode')
 
         if not Deelnemers.query.filter_by(barcode=barcode).first():
-            flash(f'Er is geen gebruiker met barcode {barcode}', 'danger')
-            return redirect(url_for('main.tijd_scan'))
+            #Nieuwe lege gebruiker maken
+            new = Deelnemers()
+            new.naam = '-'
+            new.barcode = barcode
+            # new.geslacht = 'U'
+
+            db.session.add(new)
+            db.session.commit()
+            flash(f'Er is een nieuwe gebruiker met barcode {barcode} toegevoegd', 'warning')
+            # return redirect(url_for('main.tijd_scan'))
 
         db_row = Tijden()
         db_row.tijd = time.time()
