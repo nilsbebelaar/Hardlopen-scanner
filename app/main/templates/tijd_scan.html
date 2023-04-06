@@ -6,30 +6,24 @@
 
 {% block content %}
 <div class="main-column-centered box">
-  <form method="POST">
-    
-    <div class="field is-horizontal">
+  <form action="POST" onsubmit="scan_ajax_submit();return false;">
+    <div class="field is-horizontal mb-0">
       <div class="field-label is-normal">
         <label class="label">Barcode</label>
       </div>
       <div class="field-body">
         <div class="field is-expanded">
           <div class="control">
-            <input id="defaultInput" class="input" type="text" name="barcode">
+            <input id="barcode" class="input" type="text" name="barcode">
           </div>
         </div>
       </div>
     </div>
     <script>
-      $("#defaultInput").focus();
+      $("#barcode").focus();
     </script>
-    <hr>
-    <div class="flex-center">
-      <button class="button is-block is-info is-light is-medium">
-        <span class="icon is-medium"><i class="fas fa-plus"></i></span>
-        <span>Toevoegen</span>
-      </button>
-    </div>
   </form>
+</div>
+<div id="notification-list" class="main-column-centered">
 </div>
 {% endblock %}

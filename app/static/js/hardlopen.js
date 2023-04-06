@@ -93,3 +93,48 @@ function deleteButton(deelnemer_id, deelnemer_naam) {
     });
   });
 };
+
+function createNotification(message, color) {
+  //Start values before 'flying in'
+  const cssStart = { top: '58px', opacity: '0', 'margin-bottom': '10px'};
+
+  $('<div class="notification is-' + color + ' is-light">' +
+    message + '</div>')
+    .css(cssStart)
+    .appendTo('#notification-list')
+    .animate({ top: '0', opacity: 1 }, 250)  //Fly-in animation
+    .delay(6500)
+    .animate({ top: '-58px', opacity: 0, 'margin-bottom': '-48px' }, 250)  //Fly-out animation
+    .queue(function () { $(this).remove() });
+}
+
+
+function scan_ajax_submit() {
+  var barcode = $("#barcode").val()
+  //Send AJAX request
+  $.ajax({
+    url: "/tijd/scan",
+    type: "POST",
+    data: JSON.stringify({
+      'barcode': barcode
+    }),
+    contentType: 'application/json; charset=utf-8',
+    dataType: "json",
+    success: function (data) {
+      //Show message from server on succes
+      createNotification(data['message'], data['messageColor'])
+    },
+    error: function (error) {
+      if (error.responseJSON) {
+        //Show error message from server if a response exists
+        createNotification(error.responseJSON['message'], 'danger')
+      } else {
+        //Show general error message
+        createNotification('Request to server for <b>' + barcode + '</b> failed.', 'danger')
+      }
+    }
+  });
+  //Reset input field
+  $("#barcode").val('')
+  $("#barcode").focus()
+}

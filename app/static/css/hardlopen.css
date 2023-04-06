@@ -84,3 +84,15 @@ table.uitslagen tr button {
 a.has-tooltip-multiline::before {
     width: auto !important;
 }
+
+#notification-list {
+    max-width: 600px;
+    z-index: -1;
+    position: relative;
+}
+
+.notification {
+    padding: 0.7em 2em;
+    margin-bottom: 10px;
+    height: 48px;
+}

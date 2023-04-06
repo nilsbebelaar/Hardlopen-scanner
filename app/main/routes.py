@@ -90,36 +90,51 @@ def tijd_scan():
         return render_template('tijd_scan.html')
 
     if request.method == 'POST':
-        barcode = request.form.get('barcode')
+        if 'application/json' not in request.content_type:
+            return jsonify(message="Content-Type must be 'application/json'"), 400
+
+        data = request.get_json()
+        if 'barcode' not in data:
+            return jsonify(message='Barcode is required'), 400
+        else:
+            if data['barcode'] == '':
+                return jsonify(message='Barcode is required'), 400
+            if not data['barcode'].isnumeric():
+                return jsonify(message='Barcode can only be a number'), 400
+            barcode = data['barcode']
+            # return jsonify(success=True, message='Opgeslagen', messageColor='info')
 
         if not Deelnemers.query.filter_by(barcode=barcode).first():
-            #Nieuwe lege gebruiker maken
-            new = Deelnemers()
-            new.naam = '-'
-            new.barcode = barcode
-            # new.geslacht = 'U'
+            # Nieuwe lege gebruiker maken
+            new_athlete = Deelnemers()
+            new_athlete.naam = '-'
+            new_athlete.barcode = barcode
+            new_time = Tijden()
+            new_time.tijd = time.time()
+            new_time.barcode = barcode
 
-            db.session.add(new)
+            db.session.add(new_athlete)
+            db.session.add(new_time)
             db.session.commit()
-            flash(f'Er is een nieuwe gebruiker met barcode {barcode} toegevoegd', 'warning')
-            # return redirect(url_for('main.tijd_scan'))
+
+            start_tijd = Tijden.query.filter_by(barcode=9999).order_by(desc(Tijden.tijd)).first().tijd
+            return jsonify(success=True, message=f"{time.strftime('%H:%M:%S', time.gmtime(new_time.tijd - start_tijd))} - Nieuwe gebruiker aangemaakt met barcode <b>{barcode}</b>.", messageColor='warning')
 
         laatste_tijd = Tijden.query.filter_by(barcode=barcode).order_by(desc(Tijden.tijd)).first()
         if laatste_tijd:
             if time.time() < 10 + laatste_tijd.tijd:
-                flash(f"{barcode} is al gescand in de laatste 10 seconden.")
-                return redirect(url_for('main.tijd_scan'))
+                return jsonify(success=True, message=f"Barcode <b>{barcode}</b> is al gescand in de laatste 10 seconden.", messageColor='info')
 
-        db_row = Tijden()
-        db_row.tijd = time.time()
-        db_row.barcode = barcode
+        new_time = Tijden()
+        new_time.tijd = time.time()
+        new_time.barcode = barcode
 
-        db.session.add(db_row)
+        db.session.add(new_time)
         db.session.commit()
 
         start_tijd = Tijden.query.filter_by(barcode=9999).order_by(desc(Tijden.tijd)).first().tijd
-        flash(f"{time.strftime('%H:%M:%S', time.gmtime(db_row.tijd - start_tijd))} geregistreerd voor '{db_row.deelnemer.naam}' is bewerkt", 'info')
-        return redirect(url_for('main.tijd_scan'))
+
+        return jsonify(success=True, message=f"{time.strftime('%H:%M:%S', time.gmtime(new_time.tijd - start_tijd))} - Tijd geregistreerd voor <b>{barcode}: {new_time.deelnemer.naam}</b>.", messageColor='success')
 
 
 @main_bp.route('/timer/start', methods=['PUT'])
