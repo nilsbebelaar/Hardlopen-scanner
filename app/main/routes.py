@@ -104,6 +104,12 @@ def tijd_scan():
             flash(f'Er is een nieuwe gebruiker met barcode {barcode} toegevoegd', 'warning')
             # return redirect(url_for('main.tijd_scan'))
 
+        laatste_tijd = Tijden.query.filter_by(barcode=barcode).order_by(desc(Tijden.tijd)).first()
+        if laatste_tijd:
+            if time.time() < 10 + laatste_tijd.tijd:
+                flash(f"{barcode} is al gescand in de laatste 10 seconden.")
+                return redirect(url_for('main.tijd_scan'))
+
         db_row = Tijden()
         db_row.tijd = time.time()
         db_row.barcode = barcode
